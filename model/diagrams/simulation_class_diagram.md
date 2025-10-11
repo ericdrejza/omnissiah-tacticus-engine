@@ -17,7 +17,7 @@ class Terrain
 class Objective
 
 SimModel *-- mesa.ContinuousSpace
-SimModel *-- Player
+SimModel *--* Player
 SimModel *-- Terrain
 SimModel *-- Objective
 
@@ -33,6 +33,9 @@ class mesa.Agent
 mesa.Agent <|-- Player
 
 class Player {
+    %% model
+    SimModel model
+
     %% engine
     FactionEngine faction_engine
 
@@ -45,11 +48,21 @@ class Player {
     Mission primary_mission
     Objective secondary_objective
     List~Unit~ units
+
+    %% methods
+    act(context)
 }
 
 Player *-- Faction
 Player *-- Unit
 Player *-- Player : 1
+Player *--* FactionEngine
+
+class FactionEngine {
+    FactionModel model
+
+    make_decision(context)
+}
 
 class Faction {
     List~Strategem~ strategems
@@ -78,6 +91,9 @@ class Model {
 
     %% weapons
     List~Weapon~ weapons
+
+    %% abilities
+    List~Ability~ abilities
 }
 
 Model <|-- ConcreteModel
