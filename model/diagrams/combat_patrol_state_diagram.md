@@ -28,7 +28,7 @@ stateDiagram-v2
 3b --> round
 state round {
     %% Turns
-    [*] --> turn
+    [*] --> turn : for each player
     turn: Turn
     state turn {
         [*] --> 4a
@@ -40,15 +40,16 @@ state round {
         4d --> 4e
         4e --> 4f
         4f --> 4g
-        4a: command
-        4b: movement
+        4a: command phase
+        4b: movement phase
         4c: overwatch (opponent)
-        4d: shooting
-        4e: charging
-        4f: fighting
-        4g: fighting back (opponent)
+        4d: shooting phase
+        4e: charge phase
+        4f: fight phase
+        4g: fight back (opponent)
+        4g --> [*]
     }
-    turn --> turn : alternate player
+    turn --> [*]
 }
 
 state if_state <<choice>>
