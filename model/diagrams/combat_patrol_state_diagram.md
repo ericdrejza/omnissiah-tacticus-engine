@@ -1,6 +1,6 @@
 ```mermaid
 ---
-title: Combat Patrol State Machine
+title: Combat Patrol State Diagram
 ---
 
 stateDiagram-v2
