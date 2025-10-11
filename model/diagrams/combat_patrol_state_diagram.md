@@ -8,7 +8,6 @@ stateDiagram-v2
 1a: declare teams
 1b: define primary mission
 1c: choose secondary objective
-
 [*] --> 1a
 1a --> 1b
 1b --> 1c
@@ -19,13 +18,14 @@ stateDiagram-v2
 1c --> 2a
 2a --> 2b
 
+%% Post Deployment
 3a: post placement ability
 3b: roll for choice of first turn
 2b --> 3a
 3a --> 3b
-3b --> round
 
 %% Rounds
+3b --> round
 state round {
     %% Turns
     [*] --> turn
@@ -51,10 +51,12 @@ state round {
     turn --> turn : alternate player
 }
 
-5a: second player scores primary objective
 state if_state <<choice>>
 round --> if_state : increment round count
 if_state --> round : <= 5
+
+%% Endgame
+5a: second player scores primary objective
 if_state --> 5a : > 5
 5a --> [*]
 ```
