@@ -2,31 +2,41 @@
 ---
 title: Simulation Class Diagram
 ---
-
 classDiagram
 
-class SimModel {
+class Game {
+    Player active_player
     List~Player~ players
     List~Terrain~ terrain
     List~Objective~ objectives
+    Mission mission
     mesa.ContinuousSpace space
+
+    +end_game()
+    +next_turn()
+    +start_game()
 }
 
+class Mission
 class mesa.ContinuousSpace
 class Terrain
 class Objective
 
-SimModel *-- mesa.ContinuousSpace
-SimModel *--* Player
-SimModel *-- Terrain
-SimModel *-- Objective
+Game *-- Mission
+Game *-- mesa.ContinuousSpace
+Game *--* Player
+Game *-- Terrain
+Game *-- Objective
 
 Entity <|-- Terrain
 Entity <|-- Objective
 Entity <|-- Model
 
 class Entity {
-    tuple[float, float] pos
+    tuple[float, float] position
+
+    +moveTo()
+    +destroy()
 }
 
 class mesa.Agent
@@ -34,7 +44,7 @@ mesa.Agent <|-- Player
 
 class Player {
     %% model
-    SimModel model
+    Game game
 
     %% engine
     FactionEngine faction_engine
@@ -45,12 +55,12 @@ class Player {
     %% stats
     int command_points
     Faction faction
-    Mission primary_mission
     Objective secondary_objective
     List~Unit~ units
 
     %% methods
-    act(context)
+    create_army()
+    take_turn()
 }
 
 Player *-- Faction
@@ -61,25 +71,28 @@ Player *--* FactionEngine
 class FactionEngine {
     FactionModel model
 
-    make_decision(context)
+    make_decision(game)
 }
 
 class Faction {
     List~Strategem~ strategems
     List~Units~ units
+    dict~str, func~ faction_rule_dict
 }
 
 Faction *-- Unit
 
 class Unit {
     List~Model~ models
+
+    +take_damage(int)
+    +attack(Unit, Weapon)
+    +performSpecialAbility()
 }
 
 Unit *-- Model
 
 class Model {
-    <<Abstract>>
-
     %% stat line
     int invulnerable_save
     int leadership
@@ -101,11 +114,14 @@ Model <|-- ConcreteModel
 Model *-- Weapon
 
 class Weapon {
+    str name
     int armour_penetration
     int damage
     int num_attacks
     int range
     int skill
     int strength
+
+    +attack()
 }
 ```
