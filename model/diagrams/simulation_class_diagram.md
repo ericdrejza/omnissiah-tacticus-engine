@@ -122,14 +122,18 @@ Model *-- Weapon
 
 class Weapon {
     str name
+    List~WeaponProfile~ profiles
+    +attack()
+}
+
+class WeaponProfile {
+    str name
     int armour_penetration
     int damage
     int num_attacks
     int range
     int skill
     int strength
-    List~WeaponProfile~ profiles
-
-    +attack()
+    Set~Keyword~ keywords
 }
 ```
