@@ -4,6 +4,10 @@ title: Simulation Class Diagram
 ---
 classDiagram
 
+class mesa.Model
+
+mesa.Model <|-- Game
+
 class Game {
     Player active_player
     List~Player~ players
@@ -34,6 +38,7 @@ Entity <|-- Model
 
 class Entity {
     tuple[float, float] position
+    Shape shape
 
     +moveTo()
     +destroy()
@@ -93,6 +98,10 @@ class Unit {
 Unit *-- Model
 
 class Model {
+    %% info
+    bool sergeant
+    Set~Keyword~ keywords
+
     %% stat line
     int invulnerable_save
     int leadership
@@ -109,8 +118,6 @@ class Model {
     List~Ability~ abilities
 }
 
-Model <|-- ConcreteModel
-
 Model *-- Weapon
 
 class Weapon {
@@ -121,6 +128,7 @@ class Weapon {
     int range
     int skill
     int strength
+    List~WeaponProfile~ profiles
 
     +attack()
 }
